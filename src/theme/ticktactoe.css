@@ -1,0 +1,9 @@
+.centerRow {
+    border-top: 2px solid var(--ion-color-primary);
+    border-bottom: 2px solid var(--ion-color-primary);
+}
+
+.centerCol {
+    border-left: 2px solid var(--ion-color-primary);
+    border-right: 2px solid var(--ion-color-primary);
+}
