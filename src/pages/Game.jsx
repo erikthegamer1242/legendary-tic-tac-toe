@@ -30,7 +30,7 @@ export default class GamePage extends React.Component
         }));
     }
 
-    render()
+    Game = () => {
     {
         return (
             <div className="app">
