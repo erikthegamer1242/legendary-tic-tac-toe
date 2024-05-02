@@ -189,11 +189,12 @@ export default class Game extends React.Component
         const timerOPaused = this.state.xIsNext || Boolean(this.state.winner);
         const grid = generateGridNxN('game', this.props.size, this.renderBoard);
         return (
-            <div className="game-container">
+            <>
+             <div>{status}</div>
+             <br></br>
                 {grid}
                 {this.props.renderInfo &&
                     <div className="game-info">
-                        <div>{status}</div>
                         {this.props.clock &&
                             <div>[TIME]
                                 X: <CountDown key={1}
@@ -210,7 +211,7 @@ export default class Game extends React.Component
                         }
                     </div>
                 }
-            </div>
+            </>
         );
     }
 }
