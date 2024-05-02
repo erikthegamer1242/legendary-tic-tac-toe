@@ -2,7 +2,7 @@ import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/rea
 import ExploreContainer from '../components/ExploreContainer';
 import './Tab1.css';
 
-import Game from './Game';
+import GamePage from './Game';
 
 const Tab1: React.FC = () => {
   return (
@@ -13,7 +13,7 @@ const Tab1: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
-          <Game />
+          <GamePage />
       </IonContent>
     </IonPage>
   );
