@@ -2,6 +2,7 @@ import React from 'react';
 import SettingsForm from '../components/SettingsForm.jsx';
 import Game from '../components/Game.jsx';
 import './index.css';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 
 export default class GamePage extends React.Component
 {
