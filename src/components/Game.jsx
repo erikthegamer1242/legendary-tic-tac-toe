@@ -166,10 +166,9 @@ export default class Game extends React.Component
         }
         const grid = generateGridNxN('game', this.props.size, this.renderBoard);
         return (
-            <div className='game-container'>
+            <div className='game-container stretch-to-bottom'>
                 <div className="game-grid">
                     {grid}
-                    
                 </div>
                 <br/>
                 <br/>

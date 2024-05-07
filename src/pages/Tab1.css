@@ -1,3 +1,7 @@
 .game-title {
     text-align: center;
 }
+
+.stretch-to-bottom {
+    height: 90%;
+}
