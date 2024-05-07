@@ -1,6 +1,5 @@
 import React from 'react';
 import Board from './Board.jsx';
-import CountDown from './CountDown.jsx';
 import generateGridNxN from '../util/GameUtil.jsx';
 
 export default class Game extends React.Component
@@ -16,22 +15,7 @@ export default class Game extends React.Component
             xIsNext: true,
             winner: null
         };
-
-        this.timeOver = this.timeOver.bind(this);
         this.renderBoard = this.renderBoard.bind(this);
-    }
-
-    timeOver(player)
-    {
-        // console.log('Time over!!' + player + ' loses');
-        if (player === 'X')
-        {
-            this.setState({winner: 'O'});
-        }
-        else
-        {
-            this.setState({winner: 'X'});
-        }
     }
 
     isCurrentBoard(idx)
@@ -168,10 +152,6 @@ export default class Game extends React.Component
             status = this.state.winner + ' wins!';
             const lastOuterMove = {row: this.state.lastMoveLocation.outerRow,
                 col: this.state.lastMoveLocation.outerCol};
-            if (this.calculateWinner(this.state.localWinners, lastOuterMove) === null)
-            {
-                status = 'Time over! ' + status;
-            }
         }
         else
         {
@@ -184,9 +164,6 @@ export default class Game extends React.Component
                 status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
             }
         }
-
-        const timerXPaused = !this.state.xIsNext || Boolean(this.state.winner);
-        const timerOPaused = this.state.xIsNext || Boolean(this.state.winner);
         const grid = generateGridNxN('game', this.props.size, this.renderBoard);
         return (
             <div className="game-container">
@@ -194,20 +171,6 @@ export default class Game extends React.Component
                 {this.props.renderInfo &&
                     <div className="game-info">
                         <div>{status}</div>
-                        {this.props.clock &&
-                            <div>[TIME]
-                                X: <CountDown key={1}
-                                    player="X"
-                                    seconds={this.props.time * 60}
-                                    isPaused={timerXPaused}
-                                    timeOverCallback={this.timeOver} />
-                                , O: <CountDown key={2}
-                                    player="O"
-                                    seconds={this.props.time * 60}
-                                    isPaused={timerOPaused}
-                                    timeOverCallback={this.timeOver} />
-                            </div>
-                        }
                     </div>
                 }
             </div>

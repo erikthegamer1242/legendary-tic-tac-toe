@@ -35,7 +35,7 @@ export default class GamePage extends React.Component
             <div className="app">
                 <SettingsForm defaultValues={this.state} submitCallback={this.newGame} /><br/>
                 <Game key={this.state.matchID}
-                    size={this.state.boardSize}
+                    size={3}
                     clock={this.state.clock}
                     time={this.state.time}
                     renderInfo={true} />
