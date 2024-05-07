@@ -37,31 +37,6 @@ export default class SettingsForm extends React.Component
         return (
             <form onSubmit={this.handleSubmit}>
                 <input type="submit" value="New game" />
-                <label className="settings-label">
-                    Board size <input
-                        name="boardSize"
-                        type="number"
-                        min="2"
-                        max="10"
-                        value={this.state.boardSize}
-                        onChange={this.handleChange} />
-                </label>
-                <label className="settings-label">
-                    Clock <input
-                        name="clock"
-                        type="checkbox"
-                        checked={this.state.clock}
-                        onChange={this.handleChange} />
-                </label>
-                {this.state.clock &&
-                <label className="settings-label">
-                    Time (min) <input
-                        name="time"
-                        type="number"
-                        min="1"
-                        value={this.state.time}
-                        onChange={this.handleChange} />
-                </label>}
             </form>
         );
     }
