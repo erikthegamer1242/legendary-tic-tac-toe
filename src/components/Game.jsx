@@ -166,13 +166,18 @@ export default class Game extends React.Component
         }
         const grid = generateGridNxN('game', this.props.size, this.renderBoard);
         return (
-            <div className="game-container">
-                {grid}
+            <div className='game-container'>
+                <div className="game-grid">
+                    {grid}
+                    
+                </div>
+                <br/>
+                <br/>
                 {this.props.renderInfo &&
-                    <div className="game-info">
-                        <div>{status}</div>
-                    </div>
-                }
+                        <div className="game-info">
+                            <div>{status}</div>
+                        </div>
+                    }
             </div>
         );
     }

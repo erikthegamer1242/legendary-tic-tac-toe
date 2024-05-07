@@ -1,7 +1,7 @@
 import React from 'react';
 import SettingsForm from '../components/SettingsForm.jsx';
 import Game from '../components/Game.jsx';
-import './index.css';
+import './gamePage.css';
 
 export default class GamePage extends React.Component
 {
