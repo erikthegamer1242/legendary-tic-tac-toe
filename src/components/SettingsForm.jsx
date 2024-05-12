@@ -6,9 +6,7 @@ export default class SettingsForm extends React.Component
     {
         super(props);
         this.state = {
-            boardSize: this.props.defaultValues.boardSize,
-            clock: this.props.defaultValues.clock,
-            time: this.props.defaultValues.time
+            boardSize: this.props.defaultValues.boardSize
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -18,17 +16,11 @@ export default class SettingsForm extends React.Component
     handleChange(event)
     {
         const target = event.target;
-        const value = target.type === 'checkbox' ? target.checked : target.value;
-        const name = target.name;
-
-        this.setState({
-          [name]: value
-        });
     }
 
     handleSubmit(event)
     {
-        this.props.submitCallback(this.state.boardSize, this.state.clock, this.state.time);
+        this.props.submitCallback(this.state.boardSize);
         event.preventDefault();
     }
 
