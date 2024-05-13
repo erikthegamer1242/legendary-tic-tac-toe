@@ -17,16 +17,17 @@ function handleClick(a)
 function dark()
 {
     console.log("Stavi dark theme");
-    var element = document.body;
-    element.classList.toggle("dark");
-
+    var elem = document.getElementById('bg');
+    elem.classList.add("dark");
+    elem.classList.remove("light");
 }
+
 function lght()
 {
     console.log("Stavi light theme");
-    var element = document.body;
-    element.classList.toggle("light");
-
+    var elem = document.getElementById('bg');
+    elem.classList.add("light");
+    elem.classList.remove("dark");
 }
 
 function Example() {
@@ -93,8 +94,8 @@ export default class Settings extends React.Component
     render()
     {
         return (
-            <div className="center">
-                <Example />
+            <div className="center" id="bg">
+                <Example/>
             </div>
         );
     }

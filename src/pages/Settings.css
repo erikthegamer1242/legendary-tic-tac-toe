@@ -35,7 +35,7 @@
 }
 .white
 {
-    border: 2px solid rgb(200, 200, 200);
+    border: 2px solid rgb(255, 255, 255);
     padding: 10px;
     margin: 10px;
     border-radius: 10px;
@@ -43,8 +43,16 @@
 
 .black
 {
-    border: 2px solid rgb(40, 40, 40);
+    border: 2px solid rgb(0, 0, 0);
     padding: 10px;
     margin: 10px;
     border-radius: 10px;
+}
+.dark {
+    background-color: black;
+    color: white;
+}
+.light{
+    background-color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
 }

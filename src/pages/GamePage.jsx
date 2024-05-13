@@ -11,7 +11,6 @@ export default class GamePage extends React.Component
         this.state = {
             matchID: 0
         };
-
         this.newGame = this.newGame.bind(this);
     }
 
@@ -30,7 +29,7 @@ export default class GamePage extends React.Component
     render()
     {
         return (
-            <div className="app stretch-to-bottom">
+            <div className="app stretch-to-bottom" id="bg">
                 <SettingsForm defaultValues={this.state} submitCallback={this.newGame} /><br/>
                 <Game key={this.state.matchID}
                     size={3}
