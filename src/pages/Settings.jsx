@@ -2,6 +2,33 @@ import React from 'react';
 import { IonRadio, IonRadioGroup } from '@ionic/react';
 import './Settings.css';
 
+function handleClick(a)
+{
+    if(a==1)
+    {
+        lght();
+    }
+    else
+    {
+        dark();
+    }
+}
+
+function dark()
+{
+    console.log("Stavi dark theme");
+    var element = document.body;
+    element.classList.toggle("dark");
+
+}
+function lght()
+{
+    console.log("Stavi light theme");
+    var element = document.body;
+    element.classList.toggle("light");
+
+}
+
 function Example() {
     return (
         <div>
@@ -24,12 +51,12 @@ function Example() {
         <div>Set theme background:</div>
         <br/>
         <div className='white'>
-            <IonRadio aria-label="whitebg" color="light" value="white">light</IonRadio>
+            <IonRadio aria-label="whitebg" onClick={() => handleClick(1)} color="light" value="white">light</IonRadio>
         <br/>
 
         </div>
         <div className='black'>
-            <IonRadio aria-label="blackbg" color="dark" value="black">dark</IonRadio>
+            <IonRadio aria-label="blackbg" onClick={() => handleClick(2)} color="dark" value="black">dark</IonRadio>
         <br/>
         </div>
         <br/>

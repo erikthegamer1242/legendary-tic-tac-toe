@@ -1,15 +1,19 @@
 import React from 'react';
-import { IonRadio, IonRadioGroup } from '@ionic/react';
+import { IonRadio, IonRadioGroup, IonText } from '@ionic/react';
 import './Menu.css';
 import { IonToolbar, IonButtons, IonButton, IonTitle } from '@ionic/react';
 
 
 function Example() {
     return (
+        
         <IonToolbar>
-        <IonTitle>Choose the number of players:</IonTitle>
-            <IonButton size="large" onClick={() => window.open('/game',"_self")}>SinglePlayer</IonButton>
-            <IonButton size="large" onClick={() => window.open('/tab2', '_self')}>Multiplayer</IonButton>
+             <IonText color="black">
+        <h1 className='Title'>Choose the number of players:</h1>
+        </IonText>
+            <IonButton className='button' size="large" onClick={() => window.open('/game',"_self")}>SinglePlayer</IonButton>
+            <br></br>
+            <IonButton className='button' size="large" onClick={() => window.open('/tab2', '_self')}>Multiplayer</IonButton>
         </IonToolbar>
     );
 }
