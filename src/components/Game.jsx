@@ -34,7 +34,12 @@ export default class Game extends React.Component
             const currentBoard = lastRow * this.props.size + lastCol;
             if (this.state.localWinners[currentBoard])
             {
-                return this.state.localWinners[idx] === null;
+                return idx === currentBoard; // ova linija rjesava zlatkova pravila ali treba rjesit calculatewinner tako da ne probjerava pobjedu na tom polju this.state.localWinners[currentBoard]
+                return this.state.localWinners[idx] === null;// ova linija ne dopusta da se igra na pobjednickom polju
+                // u vijetar bacena 2 sata
+                //barem znam da ako cemo ovako onda treba samo pazit na pobjede i kak cemo oznacit di se igra
+                //treuntno s ovim kad pobjedis i oces opet tamo, svijetli zeleno i nece se vratit na pobjedu dok opet ne pobjedis tamo
+                
             }
             else
             {
