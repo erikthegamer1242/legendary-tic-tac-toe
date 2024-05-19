@@ -13,7 +13,8 @@ export default class Game extends React.Component
             localWinners: Array(this.props.size * this.props.size).fill(null),
             lastMoveLocation: {row: null, col: null, outerRow: null, outerCol: null},
             xIsNext: true,
-            winner: null
+            winner: null,
+            nasLocalWinner: Array(this.props.size * this.props.size).fill(null)
         };
         this.renderBoard = this.renderBoard.bind(this);
     }
@@ -32,13 +33,17 @@ export default class Game extends React.Component
         else
         {
             const currentBoard = lastRow * this.props.size + lastCol;
+            const squares = this.state.squares[currentBoard];
             if (this.state.localWinners[currentBoard])
             {
-                return idx === currentBoard; // ova linija rjesava zlatkova pravila ali treba rjesit calculatewinner tako da ne probjerava pobjedu na tom polju this.state.localWinners[currentBoard]
-                return this.state.localWinners[idx] === null;// ova linija ne dopusta da se igra na pobjednickom polju
-                // u vijetar bacena 2 sata
-                //barem znam da ako cemo ovako onda treba samo pazit na pobjede i kak cemo oznacit di se igra
-                //treuntno s ovim kad pobjedis i oces opet tamo, svijetli zeleno i nece se vratit na pobjedu dok opet ne pobjedis tamo
+                var filled = true;
+                for (var square=0; square < squares.length; square++) {
+                    console.log(squares[square]);
+                    if (squares[square] == null) filled = false;
+                }
+
+                if (filled) return true;
+                else return idx === currentBoard;
                 
             }
             else
@@ -50,12 +55,14 @@ export default class Game extends React.Component
 
     handleClick(inner_idx, outer_idx)
     {
+        var nasLocalWinner = this.state.nasLocalWinner.slice();
         const size = this.props.size;
         var outerSquares = this.state.squares.slice();
         var squares = this.state.squares[outer_idx].slice();
         var localWinners = this.state.localWinners.slice();
         if (this.state.winner || !this.isCurrentBoard(outer_idx) || squares[inner_idx])
         {
+            console.log('Invalid move!')
             return;
         }
         squares[inner_idx] = this.state.xIsNext ? 'X' : 'O';
@@ -66,24 +73,88 @@ export default class Game extends React.Component
             outerRow: Math.floor(outer_idx / size),
             outerCol: outer_idx % size
         };
-        const newWinnerLine = this.calculateWinner(squares, lastMoveLocation);
+
+        const newWinnerLine = this.calculateWinner(squares, lastMoveLocation, outer_idx, localWinners[outer_idx]);
         localWinners[outer_idx] = newWinnerLine && squares[newWinnerLine[0]];
-        const globalWinnerLine = this.calculateWinner(localWinners,
-            {row: lastMoveLocation.outerRow, col: lastMoveLocation.outerCol});
+        if (this.state.nasLocalWinner[outer_idx] !== null && localWinners[outer_idx] === null) localWinners[outer_idx] = this.state.nasLocalWinner[outer_idx];
+        const globalWinnerLine = this.calculateGlobal(localWinners, {row: lastMoveLocation.outerRow, col: lastMoveLocation.outerCol});
         const winner = globalWinnerLine ? localWinners[globalWinnerLine[0]] : null;
         this.setState((prevState, props) => ({
             squares: outerSquares,
             localWinners: localWinners,
             lastMoveLocation: lastMoveLocation,
             xIsNext: !this.state.xIsNext,
-            winner: winner
+            winner: winner,
+            nasLocalWinner: nasLocalWinner
         }));
     }
 
-    calculateWinner(squares, lastMoveLocation)
+    calculateGlobal(squares, lastMoveLocation)
     {
+        //if (this.state.nasLocalWinner[idx] !== null && localWinners === null) localWinners = this.state.nasLocalWinner[idx];
         if (!lastMoveLocation || lastMoveLocation.row===null || lastMoveLocation.col===null)
+          {
             return null;
+          }  
+
+        const size = Math.sqrt(squares.length);
+        const x = lastMoveLocation.row;
+        const y = lastMoveLocation.col;
+        const lastPlayer = squares[x*size + y];
+        if (lastPlayer === null)
+            return null;
+
+        // Generate possible winner lines for last move
+        var lines = {row: [], col: [], diag: [], antidiag: []};
+        // Row
+        for (let i = 0; i < size; i++)
+        {
+            lines.row.push(x*size + i);
+        }
+        // Col
+        for (let i = 0; i < size; i++)
+        {
+            lines.col.push(i*size + y);
+        }
+        // Diagonal
+        if (x === y)
+        {
+            for (let i = 0; i < size; i++)
+            {
+                lines.diag.push(i*size + i);
+            }
+        }
+        // Anti-diagonal
+        if (x + y === size - 1)
+        {
+            for (let i = 0; i < size; i++)
+            {
+                lines.antidiag.push(i*size + size-1-i);
+            }
+        }
+
+        // Chech values on each candidate line
+        for (let prop in lines)
+        {
+            const line = lines[prop];
+            if (line.length !== size)
+                continue;
+            const result = line.reduce((acc, index) => acc && (squares[index] === lastPlayer), true);
+            if (result)
+            {
+                return line;
+            }
+        }
+        return null;
+    }
+
+    calculateWinner(squares, lastMoveLocation, idx, localWinners)
+    {
+        if (!lastMoveLocation || lastMoveLocation.row===null || lastMoveLocation.col===null || localWinners !== null)
+          {
+            this.state.nasLocalWinner[idx] = localWinners;
+            return null;
+          }  
 
         const size = Math.sqrt(squares.length);
         const x = lastMoveLocation.row;
