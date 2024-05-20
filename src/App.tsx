@@ -52,6 +52,8 @@ import Settings from './pages/Settings';
 setupIonicReact();
 
 const App: React.FC = () => (
+  <div className="App">
+    
   <IonApp>
     <IonReactRouter>
       <IonTabs>
@@ -83,6 +85,7 @@ const App: React.FC = () => (
       </IonTabs>
     </IonReactRouter>
   </IonApp>
+  </div>
 );
 
 export default App;

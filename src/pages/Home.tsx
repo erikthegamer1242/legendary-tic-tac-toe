@@ -14,7 +14,7 @@ import {Router, useHistory} from "react-router";
 import {useEffect, useState} from "react";
 import { collection, addDoc, getDocs, doc, getDoc } from "firebase/firestore";
 import {getFirestore} from "firebase/firestore";
-import '../firebaseconf';
+//import '../firebaseconf';
 
 const Home: React.FC = () => {
     const db = getFirestore();

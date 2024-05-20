@@ -8,7 +8,7 @@ const Tab1: React.FC = () => {
     <IonPage id="gameIonPage">
       <IonHeader>
         <IonToolbar>
-          <IonTitle className='game-title'>Tic-Tac-Toe</IonTitle>
+          <IonTitle className='game-title'>Legendary Tic-Tac-Toe</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding stretch-to-bottom">

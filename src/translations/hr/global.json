@@ -1,0 +1,15 @@
+{  
+    "Settings": "Postavke",  
+    "Game" : "Igra",
+    "Next_Player": "Idući igrač",  
+    "Player_Number" : "Odaberi broj igrača: ",
+    "Singleplayer" : "Singleplayer",
+    "Multiplayer" : "Multiplayer",
+    "Background" : "Odaberi pozadinsku temu: ",
+    "Light" : "Svijetla",
+    "Dark" : "Tamna",
+    "New_Game" : "Nova igra",
+    "Language" : "Odaberi jezik: ",
+    "English" : "Engleski",
+    "Croatian" : "Hrvatski"
+}

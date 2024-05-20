@@ -48,6 +48,14 @@
     margin: 10px;
     border-radius: 10px;
 }
+
+.green
+{
+    border: 2px solid rgb(0, 255, 42);
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+}
 .dark {
     background-color: black;
     color: white;
