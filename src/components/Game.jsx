@@ -3,8 +3,10 @@ import Board from './Board.jsx';
 import generateGridNxN from '../util/GameUtil.jsx';
 import { addData, db } from '../util/db.jsx';
 import { collection, onSnapshot } from "firebase/firestore";
+import { useTranslation } from 'react-i18next';
 
 const Game = ({ match, size, renderInfo }) => {
+    
     const [squares, setSquares] = useState(Array(size * size).fill(Array(size * size).fill(null)))
     const [localWinners, setLocalWinners] = useState(Array(size * size).fill(null))
     const [lastMoveLocation, setLastMoveLocation] = useState({row: null, col: null, outerRow: null, outerCol: null})
@@ -222,6 +224,13 @@ const Game = ({ match, size, renderInfo }) => {
         );
     }
 
+    const[t, i18n]= useTranslation("global");
+
+    const handleChangeLanguage = (lang) => {
+        i18n.changeLanguage(lang);
+        console.log("Promijenio jezik na: " + lang);
+    }
+
     let status;
         if (winner)
         {
@@ -237,7 +246,7 @@ const Game = ({ match, size, renderInfo }) => {
             }
             else
             {
-                status = 'Next player: ' + (xIsNext ? 'X' : 'O');
+                status = t("Next_Player") + (xIsNext ? 'X' : 'O');
             }
         }
         const grid = generateGridNxN('game', size, renderBoard);

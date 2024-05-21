@@ -6,35 +6,6 @@ import { IonToolbar, IonButtons, IonButton, IonTitle } from '@ionic/react';
 import { useTranslation } from "react-i18next";
 
 
-function handleClick(a)
-{
-    if(a==1)
-    {
-        lght();
-    }
-    else
-    {
-        dark();
-    }
-}
-
-function dark()
-{
-    console.log("Stavi dark theme");
-    var elem = document.getElementById("bg");
-    elem.classList.add("dark");
-    elem.classList.remove("light");
-}
-
-function lght()
-{
-    console.log("Stavi light theme");
-    var elem = document.getElementById("bg");
-    elem.classList.add("light");
-    elem.classList.remove("dark");
-}
-
-
 function Example() {
     const Test = () => {
         const[t, i18n]= useTranslation("global");

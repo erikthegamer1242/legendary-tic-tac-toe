@@ -1,7 +1,7 @@
 {  
     "Settings": "Settings",  
     "Game" : "Game",
-    "Next_Player": "Next Player",  
+    "Next_Player": "Next Player: ",  
     "Player_Number" : "Chose the number of players: ",
     "Singleplayer" : "Singleplayer",
     "Multiplayer" : "Multiplayer",

@@ -1,7 +1,7 @@
 {  
     "Settings": "Postavke",  
     "Game" : "Igra",
-    "Next_Player": "Idući igrač",  
+    "Next_Player": "Idući igrač: ",  
     "Player_Number" : "Odaberi broj igrača: ",
     "Singleplayer" : "Singleplayer",
     "Multiplayer" : "Multiplayer",

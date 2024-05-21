@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { useTranslation } from 'react-i18next';
 export default class SettingsForm extends React.Component
 {
     constructor(props)

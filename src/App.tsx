@@ -45,7 +45,7 @@ import '@ionic/react/css/palettes/dark.system.css';
 import './theme/variables.css';
 import './theme/ticktactoe.css';
 import Settings from './pages/Settings';
-
+import { useTranslation } from 'react-i18next';
 
 
 
@@ -53,7 +53,6 @@ setupIonicReact();
 
 const App: React.FC = () => (
   <div className="App">
-    
   <IonApp>
     <IonReactRouter>
       <IonTabs>
@@ -69,11 +68,9 @@ const App: React.FC = () => (
         <IonTabBar id="bottom-navigation" slot="bottom">
           <IonTabButton tab="game" href="/game">
             <IonIcon aria-hidden="true" icon={gameController} />
-            <IonLabel>Game</IonLabel>
           </IonTabButton>
           <IonTabButton tab="tab2" href="/tab2">
             <IonIcon aria-hidden="true" icon={settings} />
-            <IonLabel>Settings</IonLabel>
           </IonTabButton>
         </IonTabBar>
       </IonTabs>
