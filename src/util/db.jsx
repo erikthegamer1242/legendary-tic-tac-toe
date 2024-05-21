@@ -1,21 +1,7 @@
 import app from"../firebaseconf"
-import {useEffect, useState} from "react";
-import { collection, addDoc, getDocs, doc, getDoc, query, QuerySnapshot, setDoc } from "firebase/firestore";
+import { collection, getDocs, doc, setDoc, getFirestore } from "firebase/firestore";
 
-const db = app;
-
-export const fetchPost = async () => {
-    await getDocs(collection(db, "moves"))
-        .then((querySnapshot)=>{               
-            const newData = querySnapshot.docs
-                .map((doc) => ({...doc.data(), id:doc.id }));
-            let squares = []
-            let newSquares = newData[0]['squares']
-            while(newSquares.length) squares.push(newSquares.splice(0,9));
-            console.log(squares);
-            return squares;
-        })
-}
+export const db = getFirestore(app);
 
 export async function addData(squares) {
     let squares1d = []

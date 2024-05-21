@@ -1,48 +1,55 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Board from './Board.jsx';
 import generateGridNxN from '../util/GameUtil.jsx';
-import { addData, fetchPost } from '../util/db.jsx';
-import { connectAuthEmulator } from 'firebase/auth';
-import { square } from 'ionicons/icons';
+import { addData, db } from '../util/db.jsx';
+import { collection, onSnapshot } from "firebase/firestore";
 
-export default class Game extends React.Component
-{
-    constructor(props)
-    {
-        super(props);
-        this.state = {
-            squares: Array(this.props.size * this.props.size).fill(   // Outer squares
-                Array(this.props.size * this.props.size).fill(null)), // Inner squares
-            localWinners: Array(this.props.size * this.props.size).fill(null),
-            lastMoveLocation: {row: null, col: null, outerRow: null, outerCol: null},
-            xIsNext: true,
-            winner: null,
-            nasLocalWinner: Array(this.props.size * this.props.size).fill(null)
-        };
-        this.renderBoard = this.renderBoard.bind(this);
-    }
+const Game = ({ match, size, renderInfo }) => {
+    const [squares, setSquares] = useState(Array(size * size).fill(Array(size * size).fill(null)))
+    const [localWinners, setLocalWinners] = useState(Array(size * size).fill(null))
+    const [lastMoveLocation, setLastMoveLocation] = useState({row: null, col: null, outerRow: null, outerCol: null})
+    const [xIsNext, setXIsNext] = useState(true)
+    const [winner, setWinner] = useState(null)
+    const [nasLocalWinner, setNasLocalWinner] = useState(Array(size * size).fill(null))
 
-    isCurrentBoard(idx)
-    {
-        if (this.state.winner)
+    useEffect(() => {
+        const unsubscribe = onSnapshot(collection(db, "moves"), (collection) => {
+            const squaresFb = [];
+            collection.forEach((doc) => {
+                let newSquares = doc.data().squares;
+                while(newSquares.length) squaresFb.push(newSquares.splice(0,9));
+                console.log("fetchSquares",squaresFb);
+                if (squaresFb.length > 0) {
+                    setSquares(squaresFb);
+                }
+                else {
+                    console.log("Error parsing");
+                }
+            });
+        });
+        return () => unsubscribe();
+    }, [])
+
+    const isCurrentBoard = (idx) => {
+        if (winner)
             return false;
 
-        const lastRow = this.state.lastMoveLocation.row;
-        const lastCol = this.state.lastMoveLocation.col;
+        const lastRow = lastMoveLocation.row;
+        const lastCol = lastMoveLocation.col;
         if (lastRow === null || lastCol === null)
         {
             return true;
         }
         else
         {
-            const currentBoard = lastRow * this.props.size + lastCol;
-            const squares = this.state.squares[currentBoard];
-            if (this.state.localWinners[currentBoard])
+            const currentBoard = lastRow * size + lastCol;
+            const squaresLoc = squares[currentBoard];
+            if (localWinners[currentBoard])
             {
                 var filled = true;
-                for (var square=0; square < squares.length; square++) {
-                    console.log(squares[square]);
-                    if (squares[square] == null) filled = false;
+                for (var square=0; square < squaresLoc.length; square++) {
+                    console.log(squaresLoc[square]);
+                    if (squaresLoc[square] == null) filled = false;
                 }
 
                 if (filled) return true;
@@ -56,55 +63,48 @@ export default class Game extends React.Component
         }
     }
 
-    handleClick(inner_idx, outer_idx)
-    {
-        var nasLocalWinner = this.state.nasLocalWinner.slice();
-        const size = this.props.size;
-        var outerSquares = this.state.squares.slice();
-        var squares = this.state.squares[outer_idx].slice();
-        var localWinners = this.state.localWinners.slice();
-        if (this.state.winner || !this.isCurrentBoard(outer_idx) || squares[inner_idx])
+    const handleClick = (inner_idx, outer_idx) => {
+        var outerSquares = squares.slice();
+        var squaresLoc = squares[outer_idx].slice();
+        var localWinnersLoc = localWinners.slice();
+        if (winner || ! isCurrentBoard(outer_idx) || squaresLoc[inner_idx])
         {
             console.log('Invalid move!')
             return;
         }
-        squares[inner_idx] = this.state.xIsNext ? 'X' : 'O';
-        outerSquares[outer_idx] = squares;
-        const lastMoveLocation = {
+        squaresLoc[inner_idx] = xIsNext ? 'X' : 'O';
+        outerSquares[outer_idx] = squaresLoc;
+        const lastMoveLocationLoc = {
             row: Math.floor(inner_idx / size),
             col: inner_idx % size,
             outerRow: Math.floor(outer_idx / size),
             outerCol: outer_idx % size
         };
 
-        const newWinnerLine = this.calculateWinner(squares, lastMoveLocation, outer_idx, localWinners[outer_idx]);
-        localWinners[outer_idx] = newWinnerLine && squares[newWinnerLine[0]];
-        if (this.state.nasLocalWinner[outer_idx] !== null && localWinners[outer_idx] === null) localWinners[outer_idx] = this.state.nasLocalWinner[outer_idx];
-        const globalWinnerLine = this.calculateGlobal(localWinners, {row: lastMoveLocation.outerRow, col: lastMoveLocation.outerCol});
-        const winner = globalWinnerLine ? localWinners[globalWinnerLine[0]] : null;
-        this.setState((prevState, props) => ({
-            squares: outerSquares,
-            localWinners: localWinners,
-            lastMoveLocation: lastMoveLocation,
-            xIsNext: !this.state.xIsNext,
-            winner: winner,
-            nasLocalWinner: nasLocalWinner
-        }));
+        const newWinnerLine = calculateWinner(squaresLoc, lastMoveLocationLoc, outer_idx, localWinnersLoc[outer_idx]);
+        localWinnersLoc[outer_idx] = newWinnerLine && squaresLoc[newWinnerLine[0]];
+        if (nasLocalWinner[outer_idx] !== null && localWinnersLoc[outer_idx] === null) localWinnersLoc[outer_idx] = nasLocalWinner[outer_idx];
+        const globalWinnerLine = calculateGlobal(localWinnersLoc, {row: lastMoveLocationLoc.outerRow, col: lastMoveLocationLoc.outerCol});
+        const winnerLoc = globalWinnerLine ? localWinnersLoc[globalWinnerLine[0]] : null;
+        setSquares(outerSquares)
+        setLocalWinners(localWinnersLoc)
+        setLastMoveLocation(lastMoveLocationLoc)
+        setXIsNext(!xIsNext)
+        setWinner(winnerLoc)
+        setNasLocalWinner(nasLocalWinner)
         addData(outerSquares);
     }
 
-    calculateGlobal(squares, lastMoveLocation)
-    {
-        //if (this.state.nasLocalWinner[idx] !== null && localWinners === null) localWinners = this.state.nasLocalWinner[idx];
-        if (!lastMoveLocation || lastMoveLocation.row===null || lastMoveLocation.col===null)
-          {
+    const calculateGlobal = (squaresLoc, lastMoveLocationLoc) => {
+        if (!lastMoveLocationLoc || lastMoveLocationLoc.row===null || lastMoveLocationLoc.col===null)
+            {
             return null;
-          }  
+            }  
 
-        const size = Math.sqrt(squares.length);
-        const x = lastMoveLocation.row;
-        const y = lastMoveLocation.col;
-        const lastPlayer = squares[x*size + y];
+        const size = Math.sqrt(squaresLoc.length);
+        const x = lastMoveLocationLoc.row;
+        const y = lastMoveLocationLoc.col;
+        const lastPlayer = squaresLoc[x*size + y];
         if (lastPlayer === null)
             return null;
 
@@ -143,7 +143,7 @@ export default class Game extends React.Component
             const line = lines[prop];
             if (line.length !== size)
                 continue;
-            const result = line.reduce((acc, index) => acc && (squares[index] === lastPlayer), true);
+            const result = line.reduce((acc, index) => acc && (squaresLoc[index] === lastPlayer), true);
             if (result)
             {
                 return line;
@@ -152,18 +152,17 @@ export default class Game extends React.Component
         return null;
     }
 
-    calculateWinner(squares, lastMoveLocation, idx, localWinners)
-    {
-        if (!lastMoveLocation || lastMoveLocation.row===null || lastMoveLocation.col===null || localWinners !== null)
+    const calculateWinner = (squaresLoc, lastMoveLocationLoc, idx, localWinnersLoc) => {
+        if (!lastMoveLocationLoc || lastMoveLocationLoc.row===null || lastMoveLocationLoc.col===null || localWinnersLoc !== null)
           {
-            this.state.nasLocalWinner[idx] = localWinners;
+            nasLocalWinner[idx] = localWinnersLoc;
             return null;
           }  
 
-        const size = Math.sqrt(squares.length);
-        const x = lastMoveLocation.row;
-        const y = lastMoveLocation.col;
-        const lastPlayer = squares[x*size + y];
+        const size = Math.sqrt(squaresLoc.length);
+        const x = lastMoveLocationLoc.row;
+        const y = lastMoveLocationLoc.col;
+        const lastPlayer = squaresLoc[x*size + y];
         if (lastPlayer === null)
             return null;
 
@@ -202,7 +201,7 @@ export default class Game extends React.Component
             const line = lines[prop];
             if (line.length !== size)
                 continue;
-            const result = line.reduce((acc, index) => acc && (squares[index] === lastPlayer), true);
+            const result = line.reduce((acc, index) => acc && (squaresLoc[index] === lastPlayer), true);
             if (result)
             {
                 return line;
@@ -211,40 +210,37 @@ export default class Game extends React.Component
         return null;
     }
 
-    renderBoard(i)
-    {
+    const renderBoard = (i) => {
         return (
             <Board key={i}
-                size={this.props.size}
-                squares={this.state.squares[i]}
-                winner={this.state.localWinners[i]}
-                clickable={this.isCurrentBoard(i)}
-                onClick={(p) => this.handleClick(p, i)}
+                size={size}
+                squares={squares[i]}
+                winner={localWinners[i]}
+                clickable={isCurrentBoard(i)}
+                onClick={(p) => handleClick(p, i)}
             />
         );
     }
 
-    render()
-    {
-        let status;
-        if (this.state.winner)
+    let status;
+        if (winner)
         {
-            status = this.state.winner + ' wins!';
-            const lastOuterMove = {row: this.state.lastMoveLocation.outerRow,
-                col: this.state.lastMoveLocation.outerCol};
+            status = winner + ' wins!';
+            const lastOuterMove = {row: lastMoveLocation.outerRow,
+                col: lastMoveLocation.outerCol};
         }
         else
         {
-            if (this.state.localWinners.indexOf(null) === -1)
+            if (localWinners.indexOf(null) === -1)
             {
                 status = 'Draw! Everybody wins!! :D';
             }
             else
             {
-                status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+                status = 'Next player: ' + (xIsNext ? 'X' : 'O');
             }
         }
-        const grid = generateGridNxN('game', this.props.size, this.renderBoard);
+        const grid = generateGridNxN('game', size, renderBoard);
         return (
             <div className='game-container stretch-to-bottom'>
                 <div className="game-grid">
@@ -252,12 +248,13 @@ export default class Game extends React.Component
                 </div>
                 <br/>
                 <br/>
-                {this.props.renderInfo &&
+                {renderInfo &&
                         <div className="game-info">
                             <div id='status'>{status}</div>
                         </div>
                     }
             </div>
         );
-    }
-}
+  };
+  
+export default Game;
