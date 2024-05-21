@@ -70,3 +70,19 @@ ion-toolbar{
 ion-app{
     --background:  rgb(42, 42, 42) !important;
 }
+ion-tab-bar{
+    --background:  rgb(42, 42, 42) !important;
+}
+ion-tab-button
+{
+    color: white !important;
+}
+ion-title
+{
+    color: white !important;
+}
+#status
+{
+    color: white;
+    font-size: 1.5em;
+}

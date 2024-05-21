@@ -250,7 +250,7 @@ export default class Game extends React.Component
                 <br/>
                 {this.props.renderInfo &&
                         <div className="game-info">
-                            <div>{status}</div>
+                            <div id='status'>{status}</div>
                         </div>
                     }
             </div>
