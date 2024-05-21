@@ -33,7 +33,7 @@ export default class GamePage extends React.Component
     Game = () => {
     {
         return (
-            <div className="app" id="bg">
+            <div className="app">
                 <SettingsForm defaultValues={this.state} submitCallback={this.newGame} /><br/>
                 <Game key={this.state.matchID}
                     size={this.state.boardSize}

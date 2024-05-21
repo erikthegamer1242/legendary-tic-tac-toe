@@ -82,7 +82,7 @@ function Example() {
         return (
             
             <IonToolbar class="toolbar">
-                <div itemID='bg'>
+                <div>
                     <IonText color="black">
                         <h1 className='Title'>{t("Player_Number")}</h1>
                     </IonText>
@@ -90,18 +90,7 @@ function Example() {
                     <br></br>
                     <IonButton className='button' color="primary" size="large" onClick={() => window.open('/tab2', '_self')}>{t("Multiplayer")}</IonButton>
                     <br></br>
-                    <IonRadioGroup allowEmptySelection={false} value="white" class='radio-group'>
-                        <div className='Title'>{t("Background")}</div>
-                        <br/>
-                        <div className='white'>
-                            <IonRadio aria-label="whitebg" onClick={() => handleClick(1)} color="light" value="white">{t("Light")}</IonRadio>
-                            <br/>
-                        </div>
-                        <div className='black'>
-                            <IonRadio aria-label="blackbg" onClick={() => handleClick(2)} color="dark" value="black">{t("Dark")}</IonRadio>
-                            <br/>
-                        </div>
-                    </IonRadioGroup>
+                    <br></br>
                     <div className='Title'>{t("Language")}</div>
                         <br/>
                         <IonButton aria-label="eng" color="primary" onClick={() => handleChangeLanguage("en")}>{t("English")}</IonButton>

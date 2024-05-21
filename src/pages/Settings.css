@@ -56,11 +56,17 @@
     margin: 10px;
     border-radius: 10px;
 }
-.dark {
-    background-color: black;
-    color: white;
+
+#background-content
+{
+    background-color:  rgb(42, 42, 42);
 }
-.light{
-    background-color: rgb(255, 255, 255);
-    color: rgb(0, 0, 0);
+ion-content{
+    --ion-background-color: rgb(42, 42, 42) !important;
+}
+ion-toolbar{
+    --background:  rgb(42, 42, 42) !important;
+}
+ion-app{
+    --background:  rgb(42, 42, 42) !important;
 }

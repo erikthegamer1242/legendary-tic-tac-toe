@@ -29,7 +29,7 @@ export default class GamePage extends React.Component
     render()
     {
         return (
-            <div className="app stretch-to-bottom" id="bg">
+            <div className="app stretch-to-bottom">
                 <SettingsForm defaultValues={this.state} submitCallback={this.newGame} /><br/>
                 <Game key={this.state.matchID}
                     size={3}
