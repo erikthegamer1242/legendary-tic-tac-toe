@@ -5,6 +5,7 @@ import { addData, db } from '../util/db.jsx';
 import { collection, onSnapshot } from "firebase/firestore";
 
 const Game = ({ match, size, renderInfo }) => {
+    console.log("Game", match);
     const [squares, setSquares] = useState(Array(size * size).fill(Array(size * size).fill(null)))
     const [localWinners, setLocalWinners] = useState(Array(size * size).fill(null))
     const [lastMoveLocation, setLastMoveLocation] = useState({row: null, col: null, outerRow: null, outerCol: null})

@@ -9,13 +9,7 @@ export default class SettingsForm extends React.Component
             boardSize: this.props.defaultValues.boardSize
         };
 
-        this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    handleChange(event)
-    {
-        const target = event.target;
     }
 
     handleSubmit(event)
