@@ -14,23 +14,26 @@ const Game = ({ match, size, renderInfo }) => {
     const [winner, setWinner] = useState(null)
     const [nasLocalWinner, setNasLocalWinner] = useState(Array(size * size).fill(null))
 
-    useEffect(() => {
-        const unsubscribe = onSnapshot(collection(db, "moves"), (collection) => {
-            const squaresFb = [];
-            collection.forEach((doc) => {
-                let newSquares = doc.data().squares;
-                while(newSquares.length) squaresFb.push(newSquares.splice(0,9));
-                console.log("fetchSquares",squaresFb);
-                if (squaresFb.length > 0) {
-                    setSquares(squaresFb);
-                }
-                else {
-                    console.log("Error parsing");
-                }
-            });
-        });
-        return () => unsubscribe();
-    }, [])
+    // useEffect(() => {
+    //     const unsubscribe = onSnapshot(collection(db, "moves"), (collection) => {
+    //         const squaresFb = [];
+    //         collection.forEach((doc) => {
+    //             let newSquares = doc.data().squares;
+    //             const innner_idx = newSquares.pop()
+    //             const outer_idx = newSquares.pop()
+    //             while(newSquares.length) squaresFb.push(newSquares.splice(0,9));
+    //             console.log("fetchSquares",squaresFb);
+    //             if (squaresFb.length > 0) {
+    //                 setSquares(squaresFb);
+    //                 //handleClick(innner_idx, outer_idx);
+    //             }
+    //             else {
+    //                 console.log("Error parsing");
+    //             }
+    //         });
+    //     });
+    //     return () => unsubscribe();
+    // }, [])
 
     const isCurrentBoard = (idx) => {
         if (winner)
@@ -94,7 +97,7 @@ const Game = ({ match, size, renderInfo }) => {
         setXIsNext(!xIsNext)
         setWinner(winnerLoc)
         setNasLocalWinner(nasLocalWinner)
-        addData(outerSquares);
+        //addData(outerSquares, inner_idx, outer_idx);
     }
 
     const calculateGlobal = (squaresLoc, lastMoveLocationLoc) => {

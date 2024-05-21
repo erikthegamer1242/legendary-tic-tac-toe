@@ -17,7 +17,7 @@ export default class GamePage extends React.Component
 
     newGame(size)
     {
-        clearBoard();
+        //clearBoard();
         this.setState((prevState) => ({
             boardSize: size,
             matchID: prevState.matchID+1

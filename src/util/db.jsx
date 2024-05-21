@@ -3,7 +3,7 @@ import { collection, getDocs, doc, setDoc, getFirestore } from "firebase/firesto
 
 export const db = getFirestore(app);
 
-export async function addData(squares) {
+export async function addData(squares, inner_idx, outer_idx) {
     let squares1d = []
     for (var square in squares) {
         for (var cell in squares[square]) {
@@ -12,6 +12,9 @@ export async function addData(squares) {
     }
     //console.log(squares1d);
     //console.log('test');
+    squares1d.push(inner_idx);
+    squares1d.push(outer_idx);
+    console.log(squares1d);
     try {
         const docRef = await setDoc(doc(db, "moves", "moves"), {
             squares: squares1d
