@@ -1,6 +1,9 @@
 import React from 'react';
 import Board from './Board.jsx';
 import generateGridNxN from '../util/GameUtil.jsx';
+import { addData, fetchPost } from '../util/db.jsx';
+import { connectAuthEmulator } from 'firebase/auth';
+import { square } from 'ionicons/icons';
 
 export default class Game extends React.Component
 {
@@ -87,6 +90,7 @@ export default class Game extends React.Component
             winner: winner,
             nasLocalWinner: nasLocalWinner
         }));
+        addData(outerSquares);
     }
 
     calculateGlobal(squares, lastMoveLocation)
