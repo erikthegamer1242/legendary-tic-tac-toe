@@ -2,6 +2,7 @@ import React from 'react';
 import SettingsForm from '../components/SettingsForm.jsx';
 import Game from '../components/Game.jsx';
 import './gamePage.css';
+import { clearBoard } from '../util/db.jsx';
 
 export default class GamePage extends React.Component
 {
@@ -16,6 +17,7 @@ export default class GamePage extends React.Component
 
     newGame(size)
     {
+        clearBoard();
         this.setState((prevState) => ({
             boardSize: size,
             matchID: prevState.matchID+1

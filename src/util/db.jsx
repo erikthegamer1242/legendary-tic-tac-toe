@@ -21,3 +21,15 @@ export async function addData(squares) {
         console.error("Error adding document: ", e);
     }
 }
+
+export async function clearBoard() {
+    let squares1d = Array(81).fill(null)
+    try {
+        const docRef = await setDoc(doc(db, "moves", "moves"), {
+            squares: squares1d
+        });
+        console.log("Document written");
+    } catch (e) {
+        console.error("Error adding document: ", e);
+    }
+}
