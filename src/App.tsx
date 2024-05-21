@@ -49,6 +49,9 @@ import './theme/variables.css';
 import './theme/ticktactoe.css';
 import Settings from './pages/Settings';
 
+
+
+
 setupIonicReact();
 
 const App: React.FC = () => (
