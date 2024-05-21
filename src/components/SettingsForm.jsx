@@ -1,5 +1,4 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 export default class SettingsForm extends React.Component
 {
     constructor(props)
@@ -22,7 +21,7 @@ export default class SettingsForm extends React.Component
     {
         return (
             <form onSubmit={this.handleSubmit}>
-                <input type="submit" value="New game" />
+                <input type="submit" className='button' value="New game" />
             </form>
         );
     }

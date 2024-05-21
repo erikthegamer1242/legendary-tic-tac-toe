@@ -3,7 +3,8 @@ import SettingsForm from '../components/SettingsForm.jsx';
 import Game from '../components/Game.jsx';
 import './gamePage.css';
 import { clearBoard } from '../util/db.jsx';
-
+import { IonButton, IonText } from '@ionic/react';
+import Board from './../components/Board';
 export default class GamePage extends React.Component
 {
     constructor(props)
@@ -32,10 +33,11 @@ export default class GamePage extends React.Component
     {
         return (
             <div className="app stretch-to-bottom">
-                <SettingsForm defaultValues={this.state} submitCallback={this.newGame} /><br/>
                 <Game match={this.state.matchID}
                     size={3}
-                    renderInfo={true} />
+                    renderInfo={true} /> 
+                <IonButton className='button' onClick={() =>this.newGame(3)} color="primary" size="default">Clear</IonButton>
+                <br/>
             </div>
         );
     }

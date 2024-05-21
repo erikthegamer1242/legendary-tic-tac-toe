@@ -51,11 +51,11 @@ ol, ul {
     border: 2px solid #999;
     float: left;
 }
-.dark {
-    background-color: black;
-    color: white;
-}
-.light{
-    background-color:white;
-    color: black;
+.button {
+
+    /* center in parent but leave width to auto */
+    margin: 0 auto;
+    display: block;
+    padding: 10px 20px;
+    width: fit-content;
 }
