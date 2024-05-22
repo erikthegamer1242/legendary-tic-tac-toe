@@ -5,7 +5,7 @@ import { addData, db } from '../util/db.jsx';
 import { collection, onSnapshot } from "firebase/firestore";
 import { useTranslation } from 'react-i18next';
 
-const Game = ({ match, size, renderInfo }) => {
+const GameMulti = ({ match, size, renderInfo }) => {
     
     const [squares, setSquares] = useState(Array(size * size).fill(Array(size * size).fill(null)))
     useEffect(() => {
@@ -16,6 +16,9 @@ const Game = ({ match, size, renderInfo }) => {
     const [xIsNext, setXIsNext] = useState(true)
     const [winner, setWinner] = useState(null)
     const [nasLocalWinner, setNasLocalWinner] = useState(Array(size * size).fill(null))
+
+    const [inner_idxLoc, setInner_idxLoc] = useState(null);
+    const [outer_idxLoc, setOuter_idxLoc] = useState(null);
 
     const isCurrentBoard = (idx) => {
         if (winner)
@@ -51,35 +54,43 @@ const Game = ({ match, size, renderInfo }) => {
     }
 
     const handleClick = (inner_idx, outer_idx) => {
-        var outerSquares = squares.slice();
-        var squaresLoc = squares[outer_idx].slice();
-        var localWinnersLoc = localWinners.slice();
-        if (winner || ! isCurrentBoard(outer_idx) || squaresLoc[inner_idx])
-        {
-            console.log('Invalid move!')
+        if (inner_idx != null && outer_idx != null) {
+            console.log("inner_idxH", inner_idx);
+            console.log("outer_idxH", outer_idx);   
+            var outerSquares = squares.slice();
+            var squaresLoc = squares[outer_idx].slice();
+            var localWinnersLoc = localWinners.slice();
+            if (winner || ! isCurrentBoard(outer_idx) || squaresLoc[inner_idx])
+            {
+                console.log('Invalid move!')
+                return;
+            }
+            squaresLoc[inner_idx] = xIsNext ? 'X' : 'O';
+            outerSquares[outer_idx] = squaresLoc;
+            const lastMoveLocationLoc = {
+                row: Math.floor(inner_idx / size),
+                col: inner_idx % size,
+                outerRow: Math.floor(outer_idx / size),
+                outerCol: outer_idx % size
+            };
+
+            const newWinnerLine = calculateWinner(squaresLoc, lastMoveLocationLoc, outer_idx, localWinnersLoc[outer_idx]);
+            localWinnersLoc[outer_idx] = newWinnerLine && squaresLoc[newWinnerLine[0]];
+            if (nasLocalWinner[outer_idx] !== null && localWinnersLoc[outer_idx] === null) localWinnersLoc[outer_idx] = nasLocalWinner[outer_idx];
+            const globalWinnerLine = calculateGlobal(localWinnersLoc, {row: lastMoveLocationLoc.outerRow, col: lastMoveLocationLoc.outerCol});
+            const winnerLoc = globalWinnerLine ? localWinnersLoc[globalWinnerLine[0]] : null;
+            setSquares(outerSquares)
+            setLocalWinners(localWinnersLoc)
+            setLastMoveLocation(lastMoveLocationLoc)
+            setXIsNext(!xIsNext)
+            setWinner(winnerLoc)
+            setNasLocalWinner(nasLocalWinner)
+            addData(outerSquares, inner_idx, outer_idx, localWinners, lastMoveLocation, xIsNext, winner, nasLocalWinner);
+        }
+        else {
+            console.log("Error");
             return;
         }
-        squaresLoc[inner_idx] = xIsNext ? 'X' : 'O';
-        outerSquares[outer_idx] = squaresLoc;
-        const lastMoveLocationLoc = {
-            row: Math.floor(inner_idx / size),
-            col: inner_idx % size,
-            outerRow: Math.floor(outer_idx / size),
-            outerCol: outer_idx % size
-        };
-
-        const newWinnerLine = calculateWinner(squaresLoc, lastMoveLocationLoc, outer_idx, localWinnersLoc[outer_idx]);
-        localWinnersLoc[outer_idx] = newWinnerLine && squaresLoc[newWinnerLine[0]];
-        if (nasLocalWinner[outer_idx] !== null && localWinnersLoc[outer_idx] === null) localWinnersLoc[outer_idx] = nasLocalWinner[outer_idx];
-        const globalWinnerLine = calculateGlobal(localWinnersLoc, {row: lastMoveLocationLoc.outerRow, col: lastMoveLocationLoc.outerCol});
-        const winnerLoc = globalWinnerLine ? localWinnersLoc[globalWinnerLine[0]] : null;
-        setSquares(outerSquares)
-        setLocalWinners(localWinnersLoc)
-        setLastMoveLocation(lastMoveLocationLoc)
-        setXIsNext(!xIsNext)
-        setWinner(winnerLoc)
-        setNasLocalWinner(nasLocalWinner)
-        //addData(outerSquares, inner_idx, outer_idx);
     }
 
     const calculateGlobal = (squaresLoc, lastMoveLocationLoc) => {
@@ -216,6 +227,37 @@ const Game = ({ match, size, renderInfo }) => {
         console.log("Promijenio jezik na: " + lang);
     }
 
+    useEffect(() => {
+        console.log("recv")
+        const unsubscribe = onSnapshot(collection(db, "moves"), (collection) => {
+            const squaresFb = [];
+            collection.forEach((doc) => {
+                let newSquares = doc.data().squares;
+                const outer_idx2 = newSquares[82];
+                const inner_idx2 = newSquares[81];
+                setLocalWinners(newSquares[83])
+                // setLastMoveLocation(newSquares[84])
+                // setXIsNext(newSquares[85])
+                // setWinner(newSquares[86])
+                // setNasLocalWinner(newSquares[87])
+                // setInner_idxLoc(inner_idx2);
+                // setOuter_idxLoc(outer_idx2);
+                // while(newSquares.length-2) squaresFb.push(newSquares.splice(0,9));
+                // console.log("fetchSquares",squaresFb);
+                // console.log("fetchInner",inner_idxLoc);
+                // console.log("fetchOuter",outer_idxLoc);
+                // if (squaresFb.length > 0) {
+                //     setSquares(squaresFb);
+                //     //handleClick(innner_idx, outer_idx);
+                // }
+                // else {
+                //     console.log("Error parsing");
+                // }
+            });
+        });
+        return () => unsubscribe();
+    }, [])
+
     let status;
         if (winner)
         {
@@ -251,4 +293,4 @@ const Game = ({ match, size, renderInfo }) => {
         );
   };
   
-export default Game;
+export default GameMulti;

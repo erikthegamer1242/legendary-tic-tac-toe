@@ -1,11 +1,11 @@
 import React from 'react';
 import SettingsForm from '../components/SettingsForm.jsx';
-import Game from '../components/Game.jsx';
+import GameMulti from '../components/GameMulti.jsx';
 import './gamePage.css';
 import { clearBoard } from '../util/db.jsx';
 import { IonButton, IonText } from '@ionic/react';
 import Board from './../components/Board';
-export default class GamePage extends React.Component
+export default class GamePageMulti extends React.Component
 {
     constructor(props)
     {
@@ -18,7 +18,7 @@ export default class GamePage extends React.Component
 
     newGame(size)
     {
-        //clearBoard();
+        clearBoard();
         console.log("new game");
         this.setState((prevState) => ({
             boardSize: size,
@@ -34,7 +34,7 @@ export default class GamePage extends React.Component
     {
         return (
             <div className="app stretch-to-bottom">
-                <Game match={this.state.matchID}
+                <GameMulti match={this.state.matchID}
                     size={3}
                     renderInfo={true} /> 
                 <IonButton className='button' onClick={() =>this.newGame(3)} color="primary" size="default">Clear</IonButton>
