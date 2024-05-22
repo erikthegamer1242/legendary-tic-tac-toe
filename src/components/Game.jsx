@@ -19,8 +19,8 @@ const Game = ({ match, size, renderInfo }) => {
     //         const squaresFb = [];
     //         collection.forEach((doc) => {
     //             let newSquares = doc.data().squares;
-    //             const innner_idx = newSquares.pop()
     //             const outer_idx = newSquares.pop()
+    //             const inner_idx = newSquares.pop()
     //             while(newSquares.length) squaresFb.push(newSquares.splice(0,9));
     //             console.log("fetchSquares",squaresFb);
     //             if (squaresFb.length > 0) {
