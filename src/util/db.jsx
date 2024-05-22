@@ -15,11 +15,11 @@ export async function addData(squares, inner_idxLoc, outer_idxLoc, localWinners,
     //console.log('test');
     squares1d.push(inner_idxLoc);
     squares1d.push(outer_idxLoc);
-    squares1d.push(localWinners);
-    squares1d.push(lastMoveLocation);
-    squares1d.push(xIsNext);
-    squares1d.push(winner);
-    squares1d.push(nasLocalWinner);
+    // squares1d.push(localWinners);
+    // squares1d.push(lastMoveLocation);
+    // squares1d.push(xIsNext);
+    // squares1d.push(winner);
+    // squares1d.push(nasLocalWinner);
     console.log("add", squares1d);
     try {
         const docRef = await setDoc(doc(db, "moves", "moves"), {
@@ -32,7 +32,7 @@ export async function addData(squares, inner_idxLoc, outer_idxLoc, localWinners,
 }
 
 export async function clearBoard() {
-    let squares1d = Array(88).fill(null)
+    let squares1d = Array(83).fill(null)
     try {
         const docRef = await setDoc(doc(db, "moves", "moves"), {
             squares: squares1d

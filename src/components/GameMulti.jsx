@@ -235,24 +235,24 @@ const GameMulti = ({ match, size, renderInfo }) => {
                 let newSquares = doc.data().squares;
                 const outer_idx2 = newSquares[82];
                 const inner_idx2 = newSquares[81];
-                setLocalWinners(newSquares[83])
+                //setLocalWinners(newSquares[83])
                 // setLastMoveLocation(newSquares[84])
                 // setXIsNext(newSquares[85])
                 // setWinner(newSquares[86])
                 // setNasLocalWinner(newSquares[87])
-                // setInner_idxLoc(inner_idx2);
-                // setOuter_idxLoc(outer_idx2);
-                // while(newSquares.length-2) squaresFb.push(newSquares.splice(0,9));
-                // console.log("fetchSquares",squaresFb);
-                // console.log("fetchInner",inner_idxLoc);
-                // console.log("fetchOuter",outer_idxLoc);
-                // if (squaresFb.length > 0) {
-                //     setSquares(squaresFb);
-                //     //handleClick(innner_idx, outer_idx);
-                // }
-                // else {
-                //     console.log("Error parsing");
-                // }
+                setInner_idxLoc(inner_idx2);
+                setOuter_idxLoc(outer_idx2);
+                while(newSquares.length-2) squaresFb.push(newSquares.splice(0,9));
+                console.log("fetchSquares",squaresFb);
+                console.log("fetchInner",inner_idxLoc);
+                console.log("fetchOuter",outer_idxLoc);
+                if (squaresFb.length > 0) {
+                    setSquares(squaresFb);
+                    //handleClick(innner_idx, outer_idx);
+                }
+                else {
+                    console.log("Error parsing");
+                }
             });
         });
         return () => unsubscribe();

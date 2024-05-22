@@ -24,7 +24,7 @@ function Example() {
                     </IonText>
                     <IonButton  className='button' color="primary" size="large" onClick={() => window.open('/game',"_self")}>{t("Singleplayer")}</IonButton>
                     <br></br>
-                    {/* <IonButton className='button' color="primary" size="large" onClick={() => window.open('/gameMulti', '_self')}>{t("Multiplayer")}</IonButton> */}
+                    <IonButton className='button' color="primary" size="large" onClick={() => window.open('/gameMulti', '_self')}>{t("Multiplayer")}</IonButton>
                     <br></br>
                     <br></br>
                     <div className='Title'>{t("Language")}</div>
